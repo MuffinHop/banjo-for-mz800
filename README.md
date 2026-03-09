@@ -1,4 +1,5 @@
 # Banjo Sound Driver for Z80 Systems
+This is a fork of the Banjo Sound Driver for Sharp MZ-800 development.
 
 ### Features:
 + Furnace tracker file conversion
@@ -73,11 +74,21 @@ For a banked SDCC/SDAS output you could use it like:
 
 ```python json2sms.py -i song_name --sdas -a LIT_ -b 3 -o output.asm input.json ```
 
+For a non-banked SDCC/SDAS output (e.g. Sharp MZ-800), use:
+
+```python json2sms.py -i song_name --sdas --no-bank -o output.asm input.json ```
+
+Or use the MZ-800 shortcut:
+
+```python json2sms.py -i song_name --mz800 -o output.asm input.json ```
+
 You can use the --sdas option to enable SDCC/SDAS compatible output for use in C projects (e.g. with devkitSMS or GBDK) and will prefix `song_name` with an underscore like `_song_name` so that it can be properly referenced from C.
 
 The -b option can be used to set the bank number, and -a can be used to set the area name. When both an area name and bank number are provided as in the example, it will concatenate the two and output an AREA assembler directive like:
 
 ```.AREA LIT_3```
+
+If `--no-bank` (or `--mz800`) is set, bank metadata is forced to `0` and area bank suffixing/autobank symbol output are disabled.
 
 For sfx you use it with "-s" like:
 
@@ -112,6 +123,28 @@ Banjo's code will be in the _CODE_1 area.
 Banjo's variables will be in the _DATA area.
 
 ## Using the sound driver
+
+## Sharp MZ-800 (SN76489 at 0xF2)
+
+The SDAS driver now has a dedicated MZ-800 system profile with these assumptions:
+
++ No ROM bank switching (`BANJO_NOBANK`)
++ SN76489 output on port `0xF2`
+
+To build MZ-800 SDAS libraries, run:
+
+```sh
+cd music_driver_sdas
+./build_music_driver_sdas.sh
+```
+
+This produces MZ-800 objects under `lib/mz800/`:
+
++ `banjo.rel`
++ `banjo_sn.rel`
++ `banjo_queue.rel`
+
+Use `music_driver_sdas/system_mz800.inc` when assembling Banjo modules directly with `sdasz80`.
 
 ### Channel definitions
 

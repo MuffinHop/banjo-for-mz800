@@ -1,3 +1,5 @@
+if not exist ..\lib\mz800 mkdir ..\lib\mz800
+
 sdasz80 -o ..\lib\devkitsms\banjo.rel system_sms_devkitsms.inc banjo\banjo.asm
 sdasz80 -g -o ..\lib\devkitsms\banjo_sn.rel system_sms_devkitsms.inc sn\banjo_sn.asm
 sdasz80 -g -o ..\lib\devkitsms\banjo_opll.rel system_sms_devkitsms.inc opll\banjo_opll.asm
@@ -17,6 +19,10 @@ sdasz80 -o ..\lib\msx\banjo.rel system_msx.inc banjo\banjo.asm
 sdasz80 -g -o ..\lib\msx\banjo_ay.rel system_msx.inc ay\banjo_ay.asm
 sdasz80 -g -o ..\lib\msx\banjo_opll.rel system_msx.inc opll\banjo_opll.asm
 sdasz80 -g -o ..\lib\msx\banjo_opll_drums.rel system_msx.inc opll_drums\banjo_opll_drums.asm
+
+sdasz80 -o ..\lib\mz800\banjo.rel system_mz800.inc banjo\banjo.asm
+sdasz80 -g -o ..\lib\mz800\banjo_sn.rel system_mz800.inc sn\banjo_sn.asm
+sdasz80 -g -o ..\lib\mz800\banjo_queue.rel system_mz800.inc queue\banjo_queue.asm
 
 sdasz80 -g -o ..\lib\banjo_sfx.rel sfx\banjo_sfx.asm
 

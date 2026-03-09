@@ -1,3 +1,5 @@
+mkdir -p ../lib/mz800
+
 sdasz80 -o ../lib/devkitsms/banjo.rel system_sms_devkitsms.inc banjo/banjo.asm
 sdasz80 -g -o ../lib/devkitsms/banjo_sn.rel system_sms_devkitsms.inc sn/banjo_sn.asm
 sdasz80 -g -o ../lib/devkitsms/banjo_opll.rel system_sms_devkitsms.inc opll/banjo_opll.asm
@@ -18,6 +20,10 @@ sdasz80 -g -o ../lib/msx/banjo_ay.rel system_msx.inc ay/banjo_ay.asm
 sdasz80 -g -o ../lib/msx/banjo_opll.rel system_msx.inc opll/banjo_opll.asm
 sdasz80 -g -o ../lib/msx/banjo_opll_drums.rel system_msx.inc opll_drums/banjo_opll_drums.asm
 
+sdasz80 -o ../lib/mz800/banjo.rel system_mz800.inc banjo/banjo.asm
+sdasz80 -g -o ../lib/mz800/banjo_sn.rel system_mz800.inc sn/banjo_sn.asm
+sdasz80 -g -o ../lib/mz800/banjo_queue.rel system_mz800.inc queue/banjo_queue.asm
+
 sdasz80 -g -o ../lib/banjo_sfx.rel sfx/banjo_sfx.asm
 
 sdasz80 -g -o ../lib/banjo_queue.rel queue/banjo_queue.asm
@@ -28,6 +34,7 @@ unix2dos ../lib/*
 unix2dos ../lib/devkitsms/*
 unix2dos ../lib/gbdk_sms/*
 unix2dos ../lib/msx/*
+unix2dos ../lib/mz800/*
 
 unix2dos ../lib_experimental/devkitsms_MINIMAL/*
 

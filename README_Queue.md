@@ -1,6 +1,8 @@
 # Queue Library
 
-This is a library currently only intended for the Sega Master System, as the banking calls are hard-coded.
+This library was originally intended for the Sega Master System. But has been forked to work with Sharp MZ-800 as well.
+
+For non-banked targets (such as Sharp MZ-800), Banjo now supports a `BANJO_NOBANK` build mode where mapper writes are skipped.
 
 ### Song/sfx Tables
 
@@ -54,14 +56,17 @@ The `banjo_queue_` functions don't immediately start playback of the new SFX or 
 
 It's in this function that the queues are checked and playback of a new Song or SFX is started. For SFX, there is an added check of the SFX priority - SFX with lower priority won't start playing if an SFX with higher priority is already playing. If a Song or SFX isn't queued, it updates the ones which are currently playing.
 
-`banjo_update` will also change the bank for slot 2 (0x8000 - 0xbfff) so if you're relying on something being in bank 2 you'll have to change the bank afterwards.
+On banked SMS builds, `banjo_update` will also change the bank for slot 2 (0x8000 - 0xbfff) so if you're relying on something being in bank 2 you'll have to change the bank afterwards.
+
+On `BANJO_NOBANK` builds (e.g. MZ-800), these bank writes are not performed.
 
 ## Function Calls
 
 ```c
 
 // handle song/sfx queues and update playing song/sfx
-// this will change the bank for slot 2 (i.e. 0x8000 to 0xbfff (writes to mapper at 0xffff))
+// on banked SMS builds this changes slot 2 bank (0x8000 to 0xbfff, writes to mapper at 0xffff)
+// on BANJO_NOBANK targets this does not perform mapper writes
 void banjo_update(void);
 
 // queue song/sfx to be played back starting on next banjo_update

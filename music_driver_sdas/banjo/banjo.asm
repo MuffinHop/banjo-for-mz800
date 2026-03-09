@@ -95,6 +95,15 @@
         .include "init_msx.inc"
 	.endif
 
+    .ifeq BANJO_SYS - 4
+
+        BANJO_MZ800 .equ 1
+        BANJO_3_57MHZ .equ 1
+
+        .include "check_hardware_mz800.inc"
+        .include "init_mz800.inc"
+    .endif
+
 
     .include "commands.inc"
     .include "init.inc"

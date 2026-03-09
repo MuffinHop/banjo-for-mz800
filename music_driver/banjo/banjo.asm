@@ -21,6 +21,8 @@
 		banjo_memory_control_value: db
 	.elif BANJO_SYS == 2
 		banjo_opm_slot: db
+	.elif BANJO_SYS == 4
+		; no additional target-specific RAM state required
 	.endif
 .ENDS
 
@@ -53,6 +55,15 @@
 		.define BANJO_4MHZ 1
 		.include "check_hardware_pc88.inc"
 		.include "init_pc88.inc"
+
+	.elif BANJO_SYS == 4
+
+		.define BANJO_MZ800 1
+		.define BANJO_3_57MHZ 1
+		.define BANJO_NOBANK 1
+
+		.include "check_hardware_mz800.inc"
+		.include "init_mz800.inc"
 
 	; ALF TEST
 	.elif BANJO_SYS == 9

@@ -1,0 +1,3 @@
+BANJO_SYS .equ 4
+BANJO_MZ800 .equ 1
+BANJO_NOBANK .equ 1

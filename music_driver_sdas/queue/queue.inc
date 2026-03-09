@@ -90,7 +90,9 @@ music_handle_sfx_queue:
         ; get bank and change slot 2 bank to this bank
         inc hl
         ld a, (hl)
-        ld (SLOT_2_BANK_CHANGE), a
+        .ifndef BANJO_NOBANK
+            ld (SLOT_2_BANK_CHANGE), a
+        .endif
 
         ; preserve bank
         push af
@@ -152,7 +154,9 @@ music_handle_song_queue:
     ; get bank and change slot 2 bank to this bank
     inc hl
     ld a, (hl)
-    ld (SLOT_2_BANK_CHANGE), a
+    .ifndef BANJO_NOBANK
+        ld (SLOT_2_BANK_CHANGE), a
+    .endif
 
     ; preserve bank
     push af
@@ -233,7 +237,9 @@ _banjo_update:
 
             ; change bank
             ld a, music_state.bank(iy)
-            ld (SLOT_2_BANK_CHANGE), a
+            .ifndef BANJO_NOBANK
+                ld (SLOT_2_BANK_CHANGE), a
+            .endif
 
             call music_update
 
@@ -262,7 +268,9 @@ _banjo_update:
 
             ; change bank
             ld a, music_state.bank(iy)
-            ld (SLOT_2_BANK_CHANGE), a
+            .ifndef BANJO_NOBANK
+                ld (SLOT_2_BANK_CHANGE), a
+            .endif
 
             call music_update
 

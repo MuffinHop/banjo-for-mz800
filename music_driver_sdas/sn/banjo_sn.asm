@@ -6,10 +6,17 @@
 
 .module BANJO_SN
 
+.ifeq BANJO_SYS - 4
+SN76489_PORT .equ 0xf2
+SN76489_2_PORT .equ 0xf2
+SN76489_3_PORT .equ 0xf2
+SN76489_4_PORT .equ 0xf2
+.else
 SN76489_PORT .equ 0x7f
 SN76489_2_PORT .equ 0x7b
 SN76489_3_PORT .equ 0x7f
 SN76489_4_PORT .equ 0x7f
+.endif
 
 
 .globl _banjo_init_sn

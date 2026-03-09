@@ -9,6 +9,10 @@
 #define SFX_DEF(SFX_LABEL, SFX_BANK, SFX_PRIORITY) { SFX_PRIORITY, SFX_BANK, &SFX_LABEL }
 #define SONG_DEF(SONG_LABEL, SONG_BANK) { 0, SONG_BANK, &SONG_LABEL }
 
+// convenience helpers for non-banked targets (e.g. Sharp MZ-800)
+#define SFX_DEF_NOBANK(SFX_LABEL, SFX_PRIORITY) { SFX_PRIORITY, 0, &SFX_LABEL }
+#define SONG_DEF_NOBANK(SONG_LABEL) { 0, 0, &SONG_LABEL }
+
 typedef struct song_s {
 
     unsigned char priority;
@@ -23,7 +27,8 @@ typedef struct song_s {
 void banjo_queue_init(void);
 
 // handle song/sfx queues and update playing song/sfx
-// this will change the bank for slot 2 (i.e. 0x8000 to 0xbfff (writes to mapper at 0xffff))
+// on banked SMS builds this changes slot 2 bank (0x8000 to 0xbfff, mapper write at 0xffff)
+// on BANJO_NOBANK targets this does not perform mapper writes
 void banjo_update(void);
 
 // queue song/sfx to be played back starting on next banjo_update

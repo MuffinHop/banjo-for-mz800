@@ -13,11 +13,11 @@ extern channel_t sfx_channel;
 void banjo_sfx_init(void);
 
 // start playing sfx
-// you should change to the sfx's bank before calling this
+// on banked targets, change to the sfx's bank before calling this
 void banjo_play_sfx(const song_data_t *song_ptr);
 
 // update sfx if one is playing
-// change to the sfx's bank before calling this
+// on banked targets, change to the sfx's bank before calling this
 void banjo_update_sfx(void);
 
 // stop the currently playing sfx

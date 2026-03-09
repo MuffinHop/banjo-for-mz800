@@ -14,6 +14,11 @@
 	.define SN76489_2_PORT 0x7b
 	.define SN76489_3_PORT 0x7f
 	.define SN76489_4_PORT 0x7b
+.elif BANJO_SYS == 4
+	.define SN76489_PORT 0xf2
+	.define SN76489_2_PORT 0xf2
+	.define SN76489_3_PORT 0xf2
+	.define SN76489_4_PORT 0xf2
 ; ALF TEST
 .elif BANJO_SYS == 9
 	.define SN76489_PORT 0x7f

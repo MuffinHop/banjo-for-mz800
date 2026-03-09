@@ -292,6 +292,8 @@ def main(argv=None):
     parser.add_option("-a", '--area',       dest='area',                                             help='AREA name')
 
     parser.add_option("", '--sdas',       dest='sdas',                                action="store_true",    help='SDAS assembler compatible output')
+    parser.add_option("", '--no-bank',    dest='no_bank',                             action="store_true",    help='disable bank output metadata (for non-banked targets)')
+    parser.add_option("", '--mz800',      dest='mz800',                               action="store_true",    help='shortcut for --sdas --no-bank')
 
     (options, args) = parser.parse_args()
 
@@ -300,6 +302,10 @@ def main(argv=None):
         parser.error("Input file name required\n")
 
     infilename = Path(args[0])
+
+    if options.mz800:
+        options.sdas = True
+        options.no_bank = True
 
     sfx = (int_def(options.sfx, -1) != -1)
     sfx_channel = int_def(options.sfx, 0) if sfx else 0
@@ -1709,7 +1715,7 @@ def main(argv=None):
 
         outfile.write(song_prefix + "_" + label + ":" + "\n")
 
-    bank_number = str(options.bank) if (options.bank) else "0"
+    bank_number = "0" if options.no_bank else (str(options.bank) if (options.bank) else "0")
 
     # sdas/sdcc mode
     if (options.sdas):
@@ -1733,10 +1739,11 @@ def main(argv=None):
         if (options.area):
 
             # postfix the area name with the bank number if available
-            outfile.write(".area _" + options.area + (str(options.bank) if options.bank else "") + "\n")
+            # unless no-bank mode is selected
+            outfile.write(".area _" + options.area + ((str(options.bank) if options.bank else "") if not options.no_bank else "") + "\n")
 
         # bank specified
-        if (options.bank):
+        if (options.bank) and (not options.no_bank):
             
             # used for gbdk autobanking
             outfile.write("___bank" + song_prefix + " .equ " + str(options.bank) + "\n")
