@@ -42,11 +42,13 @@
 #define CHAN_COUNT_OPLL		0x9
 #define CHAN_COUNT_OPLL_DRUMS   0xb
 #define CHAN_COUNT_AY		0x3
+#define CHAN_COUNT_8253         0x1
 
 #define BANJO_HAS_SN		    0x1
 #define BANJO_HAS_OPLL		    0x2
 #define BANJO_HAS_AY		    0x4
 #define BANJO_HAS_DUAL_SN		0x8
+#define BANJO_HAS_8253          0x8
 
 #define BANJO_LOOP_OFF          0
 #define BANJO_LOOP_ON           1

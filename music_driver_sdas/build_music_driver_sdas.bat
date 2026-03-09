@@ -22,6 +22,7 @@ sdasz80 -g -o ..\lib\msx\banjo_opll_drums.rel system_msx.inc opll_drums\banjo_op
 
 sdasz80 -o ..\lib\mz800\banjo.rel system_mz800.inc banjo\banjo.asm
 sdasz80 -g -o ..\lib\mz800\banjo_sn.rel system_mz800.inc sn\banjo_sn.asm
+sdasz80 -g -o ..\lib\mz800\banjo_8253.rel system_mz800.inc 8253\banjo_8253.asm
 sdasz80 -g -o ..\lib\mz800\banjo_queue.rel system_mz800.inc queue\banjo_queue.asm
 
 sdasz80 -g -o ..\lib\banjo_sfx.rel sfx\banjo_sfx.asm

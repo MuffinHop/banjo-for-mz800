@@ -49,11 +49,13 @@ CHAN_SN76489			.equ		0x0
 CHAN_OPLL			.equ		0x1
 CHAN_OPLL_DRUMS			.equ		0x2
 CHAN_AY_3_8910			.equ		0x3
+CHAN_8253			.equ		0xa
 
 CHAN_COUNT_SN			.equ		0x4
 CHAN_COUNT_OPLL			.equ		0x9
 CHAN_COUNT_OPLL_DRUMS			.equ		0xb
 CHAN_COUNT_AY			.equ		0x3
+CHAN_COUNT_8253			.equ		0x1
 
 CHAN_FLAG_MUTED			.equ		0x1
 CHAN_FLAG_NOTE_ON			.equ		0x2
@@ -121,6 +123,7 @@ BANJO_HAS_SN			.equ		0x1
 BANJO_HAS_OPLL			.equ		0x2
 BANJO_HAS_AY			.equ		0x4
 BANJO_HAS_DUAL_SN			.equ		0x8
+BANJO_HAS_8253			.equ		0x8
 BANJO_HAS_OPL			.equ		0x10
 BANJO_HAS_OPN			.equ		0x20
 BANJO_HAS_OPNA			.equ		0x40
@@ -130,6 +133,7 @@ BANJO_HAS_BIT_SN			.equ		0x0
 BANJO_HAS_BIT_OPLL			.equ		0x1
 BANJO_HAS_BIT_AY			.equ		0x2
 BANJO_HAS_BIT_DUAL_SN			.equ		0x3
+BANJO_HAS_BIT_8253			.equ		0x3
 BANJO_HAS_BIT_OPL			.equ		0x4
 BANJO_HAS_BIT_OPN			.equ		0x5
 BANJO_HAS_BIT_OPNA			.equ		0x6

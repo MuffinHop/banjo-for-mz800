@@ -1,5 +1,5 @@
 # Sharp MZ-800 Quickstart
-
+Yo! Do note the 8253/PC Speaker on MZ-800 and 700, uses frequency 1 100 000 Hz, not what IBM PC uses. This is important info for your musician, remember to set the custom clock rate ;) 
 ## 1. Build the MZ-800 driver libs
 
 ```sh
@@ -9,7 +9,7 @@ cd music_driver_sdas
 
 - `lib/mz800/banjo.rel`
 - `lib/mz800/banjo_sn.rel`
-- `lib/mz800/banjo_8255.rel`
+- `lib/mz800/banjo_8253.rel`
 - `lib/mz800/banjo_queue.rel` (optional, queue API)
 
 ## 2. Convert your song
@@ -37,7 +37,7 @@ Minimum:
 
 - `lib/mz800/banjo.rel`
 - `lib/mz800/banjo_sn.rel`
-- `lib/mz800/banjo_8255.rel`
+- `lib/mz800/banjo_8253.rel`
 - `my_song.rel`
 
 If you want queued song/sfx playback:
@@ -57,7 +57,7 @@ If you want queued song/sfx playback:
 .globl _my_song
 
 .area _DATA
-_song_channels: .ds _sizeof_channel * CHAN_COUNT_SN
+_song_channels: .ds _sizeof_channel * (CHAN_COUNT_SN + CHAN_COUNT_8253)
 
 .area _CODE
 start:
@@ -65,8 +65,8 @@ start:
 
     ; A = max channels available to driver
     ; L = chips to initialize
-    ld a, #CHAN_COUNT_SN
-    ld l, #BANJO_HAS_SN
+    ld a, #(CHAN_COUNT_SN + CHAN_COUNT_8253)
+    ld l, #BANJO_HAS_SN|BANJO_HAS_8253
     call _banjo_init
 
     ; HL = pointer to converted song data

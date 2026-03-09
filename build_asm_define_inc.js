@@ -68,13 +68,15 @@ var defines = [
         { name: "CHAN_SN76489", value: 0x00 },
         { name: "CHAN_OPLL", value: 0x01 },
         { name: "CHAN_OPLL_DRUMS", value: 0x02 },
-        { name: "CHAN_AY_3_8910", value: 0x03 }
+        { name: "CHAN_AY_3_8910", value: 0x03 },
+        { name: "CHAN_8253", value: 0x0a }
     ],
     [
         { name: "CHAN_COUNT_SN", value: 4 },
         { name: "CHAN_COUNT_OPLL", value: 9 },
         { name: "CHAN_COUNT_OPLL_DRUMS", value: 11 },
         { name: "CHAN_COUNT_AY", value: 3 },
+        { name: "CHAN_COUNT_8253", value: 1 },
     ],
     [
         { name: "CHAN_FLAG_MUTED", value: 0x01 },
@@ -153,6 +155,7 @@ var defines = [
         { name: "BANJO_HAS_OPLL", value: 0x02 },
         { name: "BANJO_HAS_AY", value: 0x04 },
         { name: "BANJO_HAS_DUAL_SN", value: 0x08 },
+        { name: "BANJO_HAS_8253", value: 0x08 },
         { name: "BANJO_HAS_OPL", value: 0x10 },
         { name: "BANJO_HAS_OPN", value: 0x20 },
         { name: "BANJO_HAS_OPNA", value: 0x40 },
@@ -163,6 +166,7 @@ var defines = [
         { name: "BANJO_HAS_BIT_OPLL", value: 1 },
         { name: "BANJO_HAS_BIT_AY", value: 2 },
         { name: "BANJO_HAS_BIT_DUAL_SN", value: 3 },
+        { name: "BANJO_HAS_BIT_8253", value: 3 },
         { name: "BANJO_HAS_BIT_OPL", value: 4 },
         { name: "BANJO_HAS_BIT_OPN", value: 5 },
         { name: "BANJO_HAS_BIT_OPNA", value: 6 },

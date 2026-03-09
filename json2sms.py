@@ -72,6 +72,7 @@ CHIP_AY_3_8910      = 0x80      # AY-3-8910 - 3 channels
 CHIP_OPN            = 0x8d      # YM2203 - 6 channels
 CHIP_OPNA           = 0x8e      # YM2608 - 16 channels
 CHIP_OPM            = 0x82      # YM2151 - 8 channels
+CHIP_8253           = 0x93      # Intel 8253 (PC speaker) - 1 channel
 
 INS_TYPE_SN76489    = 0
 INS_TYPE_OPN        = 1
@@ -90,11 +91,14 @@ CHAN_OPN            = 0x06
 CHAN_OPNA_RHYTHM    = 0x07
 CHAN_OPNA_ADPCM     = 0x08
 CHAN_OPM            = 0x09
+CHAN_8253           = 0x0a
 
 BANJO_HAS_SN        = 0x01
 BANJO_HAS_OPLL      = 0x02
 BANJO_HAS_AY        = 0x04
 BANJO_HAS_DUAL_SN   = 0x08
+# 8253 reuses this bit to keep has_chips as a single byte.
+BANJO_HAS_8253      = 0x08
 BANJO_HAS_OPL       = 0x10
 BANJO_HAS_OPN       = 0x20
 BANJO_HAS_OPNA      = 0x40
@@ -118,6 +122,7 @@ chan_volume_lookup = {
     CHAN_OPNA_RHYTHM    : 0x1f,
     CHAN_OPNA_ADPCM     : 0xff,
     CHAN_OPM            : 0x7f,
+    CHAN_8253           : 0x0f,
 }
 
 inst_volume_lookup = {
@@ -490,6 +495,25 @@ def main(argv=None):
 
             channel_update_calls.append("banjo_update_channels_ay")
 
+        elif (sound_chip == CHIP_8253):
+
+            # flag that we have an 8253
+            song['has_chips'] |= BANJO_HAS_8253
+
+            # add init and mute functions to lists
+            channel_init_calls.append("banjo_init_8253")
+            song_mute_calls.append("banjo_mute_all_8253")
+
+            channel_types.append({
+                'type': CHAN_8253,
+                'update': "banjo_update_channel_8253",
+                'subchannel': 0
+                })
+
+            channel_mute_calls.append("banjo_mute_channel_8253")
+
+            channel_update_calls.append("banjo_update_channels_8253")
+
         elif (sound_chip == CHIP_OPL) or (sound_chip == CHIP_OPL2):
 
             # flag that we have an OPL chip
@@ -629,6 +653,10 @@ def main(argv=None):
             channel_init_calls = ["banjo_init_sfx_channel_ay"]
             song_mute_calls = ["banjo_mute_all_ay"]
 
+        elif sfx_type == CHAN_8253:
+            channel_init_calls = ["banjo_init_sfx_channel_8253"]
+            song_mute_calls = ["banjo_mute_all_8253"]
+
     # process instruments
     instruments = []
 
@@ -674,7 +702,7 @@ def main(argv=None):
                 macro_data = []
                 macro_delay = []
 
-                max_volume = inst_volume_lookup[instrument["type"]]
+                max_volume = inst_volume_lookup.get(instrument["type"], 0xf)
 
                 # process macro data
                 for j in range(0, macro["length"]):
@@ -1640,7 +1668,11 @@ def main(argv=None):
 
                         midi_note = (note['note'] + (note['octave'] * 12)) & 0x7f
 
-                        if (channel_type['type'] == CHAN_SN76489) or (channel_type['type'] == CHAN_AY_3_8910):
+                        if (
+                            (channel_type['type'] == CHAN_SN76489)
+                            or (channel_type['type'] == CHAN_AY_3_8910)
+                            or (channel_type['type'] == CHAN_8253)
+                        ):
 
                             midi_note = midi_note - 12
 

@@ -106,6 +106,7 @@ Banjo has its features broken up into multiple libraries:
 |---------|------|
 | banjo | mandatory library - has the core functionality |
 | banjo_sn | support for the SN chip |
+| banjo_8253 | support for Intel 8253 (MZ-800 speaker) |
 | banjo_opll | support for the OPLL chip |
 | banjo_opll_drums | support for the OPLL chip in drums mode (requires banjo_opll) |
 | banjo_ay | support for the AY3 chip |
@@ -124,12 +125,13 @@ Banjo's variables will be in the _DATA area.
 
 ## Using the sound driver
 
-## Sharp MZ-800 (SN76489 at 0xF2)
-
-The SDAS driver now has a dedicated MZ-800 system profile with these assumptions:
-
+## Sharp MZ-800 (SN76489 + 8253/PC Speaker)
 + No ROM bank switching (`BANJO_NOBANK`)
 + SN76489 output on port `0xF2`
++ 8253 speaker gate at `0xE008` (`0x01` on, `0x00` off)
++ 8253 divisor writes at `0xE004` (low byte then high byte)
+
+`BANJO_HAS_8253` currently aliases bit `0x08` (the same bit used by `BANJO_HAS_DUAL_SN`) so `has_chips` metadata remains one byte.
 
 To build MZ-800 SDAS libraries, run:
 
@@ -142,13 +144,14 @@ This produces MZ-800 objects under `lib/mz800/`:
 
 + `banjo.rel`
 + `banjo_sn.rel`
++ `banjo_8253.rel`
 + `banjo_queue.rel`
 
 Use `music_driver_sdas/system_mz800.inc` when assembling Banjo modules directly with `sdasz80`.
 
 ### Channel definitions
 
-As songs with different chip combinations could use a variety of channel counts, you will have to define variables yourself for the maximum number of channels you will use. The CHAN_COUNT_SN, CHAN_COUNT_AY, CHAN_COUNT_OPLL and CHAN_COUNT_OPLL_DRUMS constants can be used.
+As songs with different chip combinations could use a variety of channel counts, you will have to define variables yourself for the maximum number of channels you will use. The CHAN_COUNT_SN, CHAN_COUNT_8253, CHAN_COUNT_AY, CHAN_COUNT_OPLL and CHAN_COUNT_OPLL_DRUMS constants can be used.
 
 The example below uses a C macro to declare the channel variables. There are enough channels allocated to play back songs using only the SN, using only the OPLL and using a combination of SN and OPLL. However, there are not enough channels allocated to use a combination of SN and OPLL with drums.
 
