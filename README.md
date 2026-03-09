@@ -1,6 +1,6 @@
 # Banjo Sound Driver for Z80 Systems
 This is a fork of the Banjo Sound Driver for Sharp MZ-800 development.
-
+Please check out the original, that project is awesome: https://github.com/joffb/banjo
 ### Features:
 + Furnace tracker file conversion
 + WLA-DX and SDCC/SDAS support
@@ -207,5 +207,6 @@ The converted Song/SFX data is similar to the tracker data. Each Channel has an 
 A Pattern for a Channel is an array of bytes which map to commands. The end of a line is signified by a byte with bit 7 set, so anything >= 0x80 (LINE_WAIT). When this is reached it stops processing the channel's commands and waits for a variable number of Lines before processing begins again, with the number of lines to wait defined by the lower 7 bits. A list of commands in the pattern might look like:
 
 `INSTRUMENT_CHANGE, 3, ARPEGGIO, 87, NOTE_ON, 15, (LINE_END | 15), NOTE_OFF`
+
 
 Which would mean change the channel's instrument to 3, start an arpeggio that goes [0, 5, 7] (87 == 0x57), start playing note number 15, stop processing this line and wait for 15 lines, then stop playing the note.
