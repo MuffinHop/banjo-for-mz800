@@ -16,7 +16,7 @@ cd music_driver_sdas
 
 ```sh
 python3 furnace2json.py -o my_song.json my_song.fur
-python3 json2sms.py -i my_song --mz800 -o my_song.asm my_song.json
+python3 json2sms.py -i my_song --mz800 -a MUSIC -o my_song.asm my_song.json
 ```
 
 `--mz800` means:
@@ -24,6 +24,8 @@ python3 json2sms.py -i my_song --mz800 -o my_song.asm my_song.json
 - SDAS-compatible output
 - Non-banked metadata (`bank = 0`)
 - Song symbol exported as `_my_song`
+
+`-a MUSIC` puts the converted data in `.area _MUSIC` so you can place song data independently from player code.
 
 ## 3. Assemble song data into an object
 
@@ -45,7 +47,41 @@ If you want queued song/sfx playback:
 - `lib/banjo_sfx.rel`
 - `lib/mz800/banjo_queue.rel`
 
-## 5. Minimal Z80 integration 
+## 5. Place player and song at fixed addresses
+
+For demoscene builds, treat linker area bases as your `.org` control:
+
+- `_MAIN`: your own program code
+- `_CODE`: Banjo player code (`banjo*.rel`)
+- `_MUSIC`: converted song data (`my_song.rel`, from `-a MUSIC`)
+- `_DATA`: driver RAM state
+
+Example with `sdldz80` command file (`link.lk`):
+
+```txt
+-b _MAIN=0x7000
+-b _CODE=0x9000
+-b _MUSIC=0xB000
+-b _DATA=0xC000
+
+main.rel
+lib/mz800/banjo.rel
+lib/mz800/banjo_sn.rel
+lib/mz800/banjo_8253.rel
+my_song.rel
+```
+
+```sh
+sdldz80 -f link.lk -m -i -o demo
+```
+
+If you link through `sdcc` instead of calling `sdldz80` directly, pass the same bases as linker flags:
+
+```sh
+sdcc ... -Wl-b_MAIN=0x7000 -Wl-b_CODE=0x9000 -Wl-b_MUSIC=0xB000 -Wl-b_DATA=0xC000 ...
+```
+
+## 6. Minimal Z80 integration 
 
 ```asm
 .include "music_driver_sdas/banjo_defines_sdas.inc"
@@ -59,7 +95,7 @@ If you want queued song/sfx playback:
 .area _DATA
 _song_channels: .ds _sizeof_channel * (CHAN_COUNT_SN + CHAN_COUNT_8253)
 
-.area _CODE
+.area _MAIN
 start:
     call _banjo_check_hardware
 
@@ -81,8 +117,8 @@ main_loop:
     jp main_loop
 ```
 
-## 6. Where
+## 7. Where
 
-- Song data (`my_song.asm`): program area
+- Song data (`my_song.asm`): `_MUSIC` if `-a MUSIC` is used, otherwise default code area
 - Driver state (`_song_state`, etc.): RAM inside Banjo libs
 - `_song_channels`: RAM to allocate in your own demo/game

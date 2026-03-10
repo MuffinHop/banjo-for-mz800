@@ -82,6 +82,16 @@ Or use the MZ-800 shortcut:
 
 ```python json2sms.py -i song_name --mz800 -o output.asm input.json ```
 
+For fixed memory placement on MZ-800, put song data in a dedicated area and place it at link time:
+
+```python json2sms.py -i song_name --mz800 -a MUSIC -o output.asm input.json ```
+
+Then set linker area bases (equivalent of per-section `.org`) e.g. with `sdldz80`:
+
+```sdldz80 -b _MAIN=0x7000 -b _CODE=0x9000 -b _MUSIC=0xB000 -b _DATA=0xC000 ...```
+
+If your own program code is currently in `_CODE`, move it to a separate area (for example `_MAIN`) so Banjo player code can be placed independently.
+
 You can use the --sdas option to enable SDCC/SDAS compatible output for use in C projects (e.g. with devkitSMS or GBDK) and will prefix `song_name` with an underscore like `_song_name` so that it can be properly referenced from C.
 
 The -b option can be used to set the bank number, and -a can be used to set the area name. When both an area name and bank number are provided as in the example, it will concatenate the two and output an AREA assembler directive like:
